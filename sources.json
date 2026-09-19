@@ -1,0 +1,72 @@
+[
+  {
+    "reference": 1,
+    "author": "Christopher Michael Langan",
+    "year": 2002,
+    "title": "The Cognitive-Theoretic Model of the Universe: A New Kind of Reality Theory",
+    "url": "https://infolab.ho.ua/Langan_CTMU_092902(1).pdf",
+    "edition": "56-page paper",
+    "pages_consulted": [
+      1,
+      6,
+      7,
+      36,
+      37,
+      45
+    ],
+    "role": "Primary source for motivating claims, not the mathematical toy model."
+  },
+  {
+    "reference": 2,
+    "authors": [
+      "Raphael Chetrite",
+      "Hugo Touchette"
+    ],
+    "year": 2014,
+    "title": "Nonequilibrium Markov processes conditioned on large deviations",
+    "arxiv": "1405.5157v2",
+    "url": "https://arxiv.org/html/1405.5157v2",
+    "doi": "10.1007/s00023-014-0375-8",
+    "role": "Finite-time tilted path measures and time-inhomogeneous Doob representations; the model-specific equality is proved directly in the manuscript."
+  },
+  {
+    "reference": 3,
+    "authors": [
+      "Raphael Chetrite",
+      "Hugo Touchette"
+    ],
+    "year": 2015,
+    "title": "Variational and optimal control representations of conditioned and driven processes",
+    "arxiv": "1506.05291v3",
+    "url": "https://arxiv.org/html/1506.05291v3",
+    "doi": "10.1088/1742-5468/2015/12/P12001",
+    "role": "Path-measure variational representations."
+  },
+  {
+    "reference": 4,
+    "authors": [
+      "Arnoud van der Leer",
+      "Kobe Wullaert",
+      "Benedikt Ahrens"
+    ],
+    "year": 2025,
+    "title": "Scott's Representation Theorem and the Univalent Karoubi Envelope",
+    "arxiv": "2506.22196v2",
+    "url": "https://arxiv.org/html/2506.22196v2",
+    "role": "Definition 16: direction of the reflexive-object retraction, not CTMU validation."
+  },
+  {
+    "reference": 5,
+    "year": 2026,
+    "title": "CTMU-F 0.2: Retrospective Computational Audit",
+    "path": "reproduction/ctmu_f_02_audit",
+    "role": "Supplied unpublished generated computational artifacts; originals retained."
+  },
+  {
+    "reference": 6,
+    "date": "2026-09-19",
+    "title": "Manuscript Reproduction and Supplementary Checks",
+    "path": "reproduction/current_run",
+    "role": "Fresh execution of the supplied audit and supplementary script, not external independent replication."
+  }
+]

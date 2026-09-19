@@ -1,0 +1,21 @@
+{
+  "CTMU_Inspired_Computation_Paper.docx": "517f4f4ed0352b14d4bc18de51f6c2c9441b14bf3a86c3bdce55443043e264fa",
+  "CTMU_Inspired_Computation_Paper.md": "5782031162cc1ae07fd263cdff6271d158c49916eac779d25c813aff6b06c23b",
+  "README.md": "e412481cbee1932ebc2de3451852e8be4958e4c2f245ed1def0d319526830fab",
+  "provenance/CTMU_F_02_Retrospective_Audit.zip": "26357a65d25f1c1a30cef8665f1ed45aca60ca87c99857f2215ab2b351676ec2",
+  "reproduction/ctmu_f_02_audit/README.md": "a729df3916a7ad10d4edaaec82ae598827b67c57566fad095d8e5a943f8a07b9",
+  "reproduction/ctmu_f_02_audit/audit.py": "67079218aab84eb350f8cca6f8a1867c346323b443580711c1efaca8beabb8b4",
+  "reproduction/ctmu_f_02_audit/audit_results.json": "7ab23ab5c52efed096ffd1e56d0475a147c65c2acdeb29d0d93b4c312de4325e",
+  "reproduction/ctmu_f_02_audit/manifest.json": "7379ae60307cb6579770d0f3fa10a953a6c3362316b7501eabcdb9bfc6eafb34",
+  "reproduction/ctmu_f_02_audit/original/README.md": "3fdd4547bf1e0fdee1d66f8a76bb7be8c33ab4641325a72954a2411fa76835ed",
+  "reproduction/ctmu_f_02_audit/original/ctmu_f_02.py": "ca43eec4f4f687276580993401f0869ce5b336c4eae6357042356e02355a2818",
+  "reproduction/ctmu_f_02_audit/original/results.json": "7f0693a4c47f6cca75e9e3a358118ae3755c9df1a5ad66957fa73fd06900ee23",
+  "reproduction/ctmu_f_02_audit/test_audit.py": "ec9955b081e09771f7107347201832d058a27824840f2c8750f9f6cd701ae451",
+  "reproduction/ctmu_f_02_audit/test_output.txt": "dea8eff520c197b869632d81fc9575145f838bd13b993081f340d43595fda88c",
+  "reproduction/current_run/audit_results.json": "7ab23ab5c52efed096ffd1e56d0475a147c65c2acdeb29d0d93b4c312de4325e",
+  "reproduction/current_run/run_output.txt": "eebdc56101713449f0df631b9ee01cff76dcfcb85e4dd06f6d30c532db2d2691",
+  "reproduction/current_run/supplementary_checks.json": "ab919db59cbdcad95c90dc7065ffc75bff3400f3531e4a183c082453d38df945",
+  "reproduction/current_run/test_output.txt": "df3fa4b6ff72298b7fb26780a7608e637898028334332f438a3688aabb03804b",
+  "reproduction/supplement.py": "a5732ab3f30dcceda2bf553d062630ac968f683fd9b095e5f756fb2466be40c3",
+  "sources.json": "f656c31b744824635d4483f51a6e77e4cff3b1e493db847f4b09cb8f03da6b9d"
+}

@@ -1,0 +1,978 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{setspace}
+\usepackage{caption}
+
+\definecolor{prefacegray}{RGB}{246,247,249}
+\definecolor{rulegray}{RGB}{90,95,105}
+\definecolor{linkblue}{RGB}{35,82,124}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=linkblue,
+  citecolor=linkblue,
+  urlcolor=linkblue,
+  pdftitle={What the Computation Validates: A Finite Mathematical Construction Inspired by CTMU},
+  pdfsubject={Finite stochastic formalization inspired by the Cognitive-Theoretic Model of the Universe},
+  pdfkeywords={CTMU, stochastic processes, exponential tilting, Doob transform, mathematical formalization}
+}
+
+\setstretch{1.06}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.62em}
+\setlist[itemize]{leftmargin=1.35em,itemsep=0.25em,topsep=0.35em}
+\setlist[enumerate]{leftmargin=1.6em,itemsep=0.25em,topsep=0.35em}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small CTMU-Inspired Finite Computation}
+\fancyhead[R]{\small Research Note}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+
+\newcommand{\CTMU}{\textsc{CTMU}}
+\newcommand{\KL}{D_{\mathrm{KL}}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\ind}{\mathbf{1}}
+\newcommand{\Hcal}{\mathcal{H}}
+\newcommand{\Zcal}{\mathcal{Z}}
+
+\title{\textbf{What the Computation Validates}\\[0.35em]
+\large A Finite Mathematical Construction Inspired by the Cognitive-Theoretic Model of the Universe}
+\author{Computational Research Note}
+\date{September 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\rule{0.92\textwidth}{0.5pt}
+\end{center}
+
+\section*{Preface for General Readers}
+
+\begingroup
+\setlength{\fboxsep}{12pt}
+\noindent\colorbox{prefacegray}{%
+\begin{minipage}{0.94\textwidth}
+\textbf{Why this paper exists.}
+
+The Cognitive-Theoretic Model of the Universe (\CTMU), developed by Christopher Langan, is an ambitious attempt to describe reality as a self-configuring, self-processing structure. Ideas of this kind are difficult to evaluate because philosophical language can remain suggestive even when the exact mathematical obligations are unclear. This project therefore asked a narrower question: \emph{Can a few CTMU-inspired ideas be turned into a small mathematical system that is explicit enough to compute, audit, and criticize?}
+
+The answer is yes. We constructed a tiny stochastic system with eight possible complete configurations. Over six transitions it has exactly 512 supported histories, all of which can be enumerated. A history-level score rewards recurrence, and an exponential weighting favors histories with larger scores. This makes it possible to study, without sampling error, how a global preference over complete histories changes the resulting probability distribution.
+
+\textbf{What the computation does validate.}
+
+It validates the internal mathematics of this finite construction: the transition rules are normalized, the path probabilities can be enumerated exactly at the baseline, the exponential weighting obeys standard partition-function identities, and the weighted path law can be reproduced exactly by a forward-time, time-dependent Markov process after adding a bounded amount of state information. The computational audit checks these claims exhaustively on all supported histories for several parameter values.
+
+\textbf{What it does not validate.}
+
+The computation does not show that the universe is an SCSPL, that mind and reality are identical, that nature implements a cosmic utility function, or that the CTMU is empirically correct. The transition rule, utility, horizon, and other ingredients of the finite model were chosen by the investigator rather than derived from CTMU or measured from nature. The model is therefore best understood as a \emph{mathematical sandbox inspired by CTMU}, not as a computational proof of CTMU.
+
+\textbf{The most important result.}
+
+A globally weighted history distribution can look ``future-oriented'' because whole histories receive different weights. Yet, for the particular construction studied here, the same distribution can be generated sequentially by ordinary forward-time stochastic transitions once the state is augmented appropriately. Thus, a global description and a forward description can be two mathematically equivalent representations of the same path law. That result does not rule out teleology in general, but it shows that a global history weighting alone is not evidence for a distinct causal mechanism.
+
+\textbf{How to read the paper.}
+
+Readers who do not want the technical derivations can read Sections 1--3 for the model, Section 6 for the forward-time equivalence, Section 9 for the scope of validation, and Section 11 for the conclusion. The intervening sections document why several initially attractive interpretations had to be narrowed after audit.
+\end{minipage}}
+\endgroup
+
+\begin{abstract}
+A successful computation can verify a mathematical construction without validating the philosophical theory that motivated it. This paper examines that distinction through CTMU-F 0.2, a finite stochastic model inspired by Christopher Langan's Cognitive-Theoretic Model of the Universe. The model combines an evolving binary rule selector, a four-state data space, and an exponential weighting of complete histories by a chosen recurrence functional. Every one of its 512 supported six-transition histories is enumerated. A retrospective audit reproduces the original probabilities, passes 26 implementation and mathematical-property tests, corrects an inadequately controlled memory diagnostic, and constructs a forward-time Markov representation of the entire weighted ensemble. The representation requires bounded state augmentation and time-dependent transition coefficients, not access to a realized future. Additional analysis distinguishes altered initial preparation from altered conditional evolution, establishes the non-identifiability of an unrestricted utility, and characterizes dependence on the terminal horizon. These results verify a particular probability model and consequences of its definitions. They do not establish that the model satisfies CTMU's central claims, that its utility is intrinsic to reality, or that it predicts physical observations. The contribution is a reproducible example of how a metaphysically motivated construction can be made precise, compared with conventional mathematical representations, and assigned an evidential status proportional to what was demonstrated.
+\end{abstract}
+
+\textbf{Keywords:} CTMU; computational verification; finite stochastic systems; exponential tilting; Doob transform; state augmentation; model validation; utility identification.
+
+\tableofcontents
+\newpage
+
+\section{Introduction: the object of validation}
+
+The statement that a computation \emph{validates a theory} is incomplete until the object of validation is specified. A program may correctly implement equations whose physical interpretation remains unsupported. A mathematical model may be internally coherent while representing only a weakened version of its motivating theory. A distribution may differ dramatically from a baseline because the investigator explicitly defined it to do so.
+
+This paper examines a case in which all three distinctions matter.
+
+CTMU-F 0.2 was developed as a computational interpretation of selected CTMU themes. Its initial presentation emphasized changing syntax, globally weighted histories, and apparent memory. A subsequent audit showed that the arithmetic largely survived scrutiny while several interpretations required correction.
+
+The claim defended here is deliberately narrow:
+
+\begin{quote}
+\textbf{The computation verifies a small mathematical construction inspired by CTMU, together with specific consequences of that construction. It does not validate CTMU as a theory of reality.}
+\end{quote}
+
+Four senses of validation are useful to distinguish.
+
+\begin{enumerate}
+\item \textbf{Implementation verification} concerns whether a program performs the operations specified by its mathematical definition.
+\item \textbf{Constructive mathematical validation} concerns whether the specified object exists and possesses the properties attributed to it.
+\item \textbf{Interpretive validation} would require a demonstrated correspondence between the mathematical object and the theoretical claims it is intended to represent.
+\item \textbf{Empirical validation} would require comparison with observations under a specified physical interpretation.
+\end{enumerate}
+
+These are working distinctions for this paper, not a claim that every discipline uses the terminology identically.
+
+The investigation is a retrospective computational case study. It contains no physical measurements, fitted physical constants, preregistered hypothesis test, or independently conducted external replication. The ordinary proofs below, rather than floating-point agreement alone, establish the general mathematical statements.
+
+\section{Relationship to the motivating theory}
+
+Langan's 2002 paper describes reality as a self-configuring, self-processing language, or SCSPL \cite{langan2002}. It proposes internally unified processing, state, and production structure, together with joint refinement of syntax and state under generalized utility. Its explicit grammar specification is
+
+\begin{equation}
+\Gamma=(O,R,P,\mu),
+\end{equation}
+
+involving processors, products, productions, and an initial form. The paper also advances claims concerning unbound telesis and the relationship between mind and reality.
+
+These claims motivated the experiment; they were not established by it. In particular, the binary selector \(\gamma\) introduced below is not Langan's grammar \(\Gamma\). Similar notation must not disguise a substantial difference in mathematical content.
+
+The implemented model contains an already selected configuration space, a fixed transition kernel, and an externally specified reward. Its dynamics can change a rule-selecting variable, but they do not internally derive the complete interpretation or update mechanism. These ingredients were chosen for the experiment rather than derived from CTMU.
+
+The construction should therefore be evaluated as a proposed finite analogue, not as a faithful implementation established by a correspondence theorem.
+
+The use of an external computer is not itself the objection. A simulation can represent an internally closed mathematical system. The relevant issue is what the represented system contains and which claimed properties have been demonstrated. Here, preservation of a finite domain is established; explanatory self-containment is not.
+
+\section{The finite construction}
+
+\subsection{Configuration space and execution}
+
+Let the data space and selector space be
+
+\begin{equation}
+S=\{0,1\}^{2},
+\qquad
+G=\{0,1\}.
+\end{equation}
+
+A complete configuration is
+
+\begin{equation}
+z=(\gamma,s)=(\gamma,(x,y))
+\in\Zcal=G\times S,
+\qquad
+|\Zcal|=8.
+\end{equation}
+
+The term \emph{physical state} in the original program refers only to the designated component \(s\). No experimental meaning is assigned to its bits.
+
+Define deterministic meta-execution by
+
+\begin{align}
+x_d &= x\oplus y\oplus\gamma,\\
+y_d &= x,\\
+\gamma_d &= \gamma\oplus(x_d\land y_d),
+\end{align}
+
+and
+
+\begin{equation}
+M(z)=(\gamma_d,(x_d,y_d)).
+\end{equation}
+
+Here, \(\oplus\) denotes exclusive OR and \(\land\) denotes Boolean AND.
+
+Define a perturbation map
+
+\begin{equation}
+B(\gamma,(x,y))=(\gamma,(1-x,y)).
+\end{equation}
+
+The stochastic transition kernel is
+
+\begin{equation}
+K(z,z')
+=
+\frac45\ind_{\{z'=M(z)\}}
++
+\frac15\ind_{\{z'=B(M(z))\}}.
+\end{equation}
+
+The perturbation occurs \emph{after} \(\gamma_d\) has been calculated. It changes the first data bit while retaining the calculated selector. Recomputing the selector after perturbation would define a different model.
+
+The initial law is uniform:
+
+\begin{equation}
+\mu_0(z)=\frac18.
+\end{equation}
+
+For a supported history \(h=(z_0,\ldots,z_T)\),
+
+\begin{equation}
+P_0^{(T)}(h)
+=
+\mu_0(z_0)
+\prod_{t=0}^{T-1}K(z_t,z_{t+1}).
+\end{equation}
+
+Write \(\Hcal_T\) for the support of this law. The principal experiment uses \(T=6\).
+
+\subsection{Elementary structure of the baseline}
+
+\begin{proposition}
+The construction defines a normalized finite Markov chain. Its uniform distribution is stationary, and
+\begin{equation}
+|\Hcal_T|=8\cdot2^T.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Each configuration has two distinct successors, with probabilities summing to one.
+
+To show that \(M\) is a permutation, let its output be \((u,(v,w))\). Its input is uniquely recovered by
+\begin{align}
+x&=w,\\
+\gamma&=u\oplus(v\land w),\\
+y&=v\oplus w\oplus\gamma.
+\end{align}
+Since \(B\) is also a permutation, \(K\) is a convex combination of two permutation matrices. Its columns and rows therefore sum to one, so the uniform distribution is stationary.
+
+Finally, an initial configuration and a sequence of binary branch choices determine distinct complete histories. Thus there are \(8\cdot2^T\) supported histories.
+\end{proof}
+
+For \(T=6\), the number is \(512\).
+
+The baseline path entropy also has the independent expression
+
+\begin{equation}
+H(P_0^{(T)})
+=
+\log8
++
+T\left[
+-\frac45\log\frac45
+-\frac15\log\frac15
+\right].
+\end{equation}
+
+At \(T=6\), this is approximately \(5.081856\) nats. It is Shannon entropy of a finite probability ensemble, not a derived thermodynamic entropy.
+
+\subsection{History utility and exponential weighting}
+
+The chosen recurrence functional is
+
+\begin{equation}
+V_T(h)
+=
+\sum_{t=1}^{T}\ind_{\{s_t=s_0\}}
++
+\frac12
+\sum_{t=2}^{T}\ind_{\{z_t=z_{t-2}\}}.
+\end{equation}
+
+The first term rewards returns to the initial data state. The second rewards two-step recurrence of the complete configuration. The coefficient \(1/2\) is a modeling choice.
+
+For finite real \(\lambda\), define
+
+\begin{equation}
+P_\lambda^{(T)}(h)
+=
+\frac{
+P_0^{(T)}(h)e^{\lambda V_T(h)}
+}{
+Z_T(\lambda)
+},
+\end{equation}
+
+where
+
+\begin{equation}
+Z_T(\lambda)
+=
+\sum_{h\in\Hcal_T}
+P_0^{(T)}(h)e^{\lambda V_T(h)}.
+\end{equation}
+
+Positive \(\lambda\) favors higher-scoring histories; negative \(\lambda\) favors lower-scoring ones.
+
+This construction is an exponential tilt of a path measure, a form with established connections to conditioned stochastic processes and variational representations \cite{chetrite2015ld,chetrite2015control}. The term \emph{telic} is an interpretation proposed for the weighting, not a property established by normalization.
+
+\section{Mathematical guarantees and their evidential limits}
+
+\subsection{Normalization, recovery, and non-idleness}
+
+\begin{proposition}
+For every finite \(\lambda\), \(P_\lambda^{(T)}\) is a probability law with the same support as \(P_0^{(T)}\). At \(\lambda=0\), it equals the baseline. For nonzero \(\lambda\), equality with the baseline holds if and only if \(V_T\) is constant on that support.
+\end{proposition}
+
+\begin{proof}
+The partition sum is finite and strictly positive. At zero tilt, it equals one.
+
+For nonzero tilt, equality requires
+\begin{equation}
+e^{\lambda V_T(h)}=Z_T(\lambda)
+\end{equation}
+for every supported history. This is equivalent to constancy of \(V_T\). The converse follows by cancellation.
+\end{proof}
+
+Consequently, the observation that a nonconstant reward changes the distribution is guaranteed by the definition. It is an implementation check, not a discovery favoring a particular metaphysics.
+
+A support qualification is also necessary. Restricting normalization to an admissible subset \(A\) of positive baseline probability gives, at zero tilt,
+
+\begin{equation}
+P_{0,A}(h)
+=
+\frac{P_0(h)\ind_A(h)}{P_0(A)}.
+\end{equation}
+
+This recovers the original baseline only when \(P_0(A)=1\). Otherwise, it recovers a conditioned baseline.
+
+\subsection{Partition identities}
+
+Suppressing \(T\) where unambiguous, differentiating the finite partition sum gives
+
+\begin{equation}
+\frac{d\log Z}{d\lambda}
+=
+\E_\lambda[V],
+\end{equation}
+
+and
+
+\begin{equation}
+\frac{d^2\log Z}{d\lambda^2}
+=
+\operatorname{Var}_\lambda(V).
+\end{equation}
+
+Therefore,
+
+\begin{equation}
+\frac{d\E_\lambda[V]}{d\lambda}
+=
+\operatorname{Var}_\lambda(V)\ge0.
+\end{equation}
+
+Increasing the weighting parameter necessarily increases the expected score. This does not establish that a system discovers its own purpose. It follows because higher scores receive relatively greater weight.
+
+The relative entropy is
+
+\begin{equation}
+\KL(P_\lambda\Vert P_0)
+=
+\lambda\E_\lambda[V]-\log Z(\lambda).
+\end{equation}
+
+All logarithms are natural, so entropies and divergences are expressed in nats.
+
+\subsection{Variational representation}
+
+\begin{proposition}
+Among probability laws \(Q\) on \(\Hcal_T\), the unique maximizer of
+\begin{equation}
+\lambda\E_Q[V]
+-
+\KL(Q\Vert P_0)
+\end{equation}
+is \(P_\lambda\), and the maximum is \(\log Z(\lambda)\).
+\end{proposition}
+
+\begin{proof}
+Substituting the definition of \(P_\lambda\) gives
+\begin{equation}
+\KL(Q\Vert P_\lambda)
+=
+\KL(Q\Vert P_0)
+-
+\lambda\E_Q[V]
++
+\log Z.
+\end{equation}
+Non-negativity, with equality exactly when \(Q=P_\lambda\), proves the claim.
+\end{proof}
+
+This finite identity belongs to the established path-measure variational framework \cite{chetrite2015control}. It shows that the weighted law balances expected reward against divergence from the selected baseline. It does not derive either ingredient or uniquely identify a physical selection mechanism.
+
+\section{Computational protocol and numerical results}
+
+\subsection{What was computed}
+
+The audit enumerates all supported histories rather than sampling them. Baseline probabilities are represented by exact rational numbers, and twice the utility is represented by an integer. Exponential weighting uses floating-point arithmetic.
+
+Exhaustive enumeration removes Monte Carlo sampling error. It does not remove rounding or guarantee that a program contains no mistakes.
+
+The audit contains 26 tests covering normalization, stationary uniformity, agreement with the original program, utility decomposition, partition identities, memory controls, initialization, the forward representation, utility rescaling, and horizon dependence. All 26 executed tests pass. These are implementation and mathematical-property checks, not empirical tests of CTMU.
+
+The exact baseline moments are
+
+\begin{equation}
+\E_0[V]
+=
+\frac{51679}{25000}
+=
+2.06716,
+\end{equation}
+
+\begin{equation}
+\operatorname{Var}_0(V)
+=
+\frac{1674043459}{625000000}
+=
+2.6784695344.
+\end{equation}
+
+\subsection{Response to the weighting parameter}
+
+\begin{table}[htbp]
+\centering
+\caption{Globally normalized six-transition ensembles.}
+\label{tab:lambda}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+\(\lambda\) & \(\E_\lambda[V]\) & \(\operatorname{Var}_\lambda(V)\) & \(\KL(P_\lambda\Vert P_0)\) \\
+\midrule
+0.00 & 2.067160 & 2.678470 & 0.000000 \\
+0.25 & 3.169873 & 6.600775 & 0.158445 \\
+0.50 & 5.314536 & 9.500563 & 0.978826 \\
+1.00 & 8.085082 & 1.773354 & 2.876230 \\
+2.00 & 8.476634 & 0.044193 & 3.356899 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+These values show substantial sensitivity to the weighting parameter. They do not compare CTMU with established physics: \(P_0\) is the invented finite baseline, not quantum theory, general relativity, or an observationally calibrated physical model.
+
+The increasing mean and eventual reduction in variance indicate concentration on high-scoring histories. Further claims about cognition or self-actualization would require separate operational definitions.
+
+\subsection{Corrected memory diagnostics}
+
+The original memory diagnostic omitted the selector \(\gamma_t\) and pooled different times. Both choices can confound history dependence.
+
+The designated data component is already non-Markovian under the baseline:
+
+\begin{equation}
+P_0(s_2=(0,1)\mid s_1=(1,1))
+=
+\frac12,
+\end{equation}
+
+whereas
+
+\begin{equation}
+P_0(s_2=(0,1)\mid s_1=(1,1),s_0=(1,0))
+=
+\frac15.
+\end{equation}
+
+The difference is \(0.300\) before weighting. Prior data states reveal information about the omitted selector.
+
+\begin{table}[htbp]
+\centering
+\caption{Maximum conditional-probability discrepancies.}
+\label{tab:memory}
+\begin{tabular}{@{}p{0.60\textwidth}rr@{}}
+\toprule
+Diagnostic & \(\lambda=0\) & \(\lambda=1\) \\
+\midrule
+Original pooled data-state pair test & 0.300000 & 0.679506 \\
+Fixed-time data-state pair test & 0.300000 & 0.783755 \\
+Fixed-time complete-configuration pair test & \(<10^{-14}\) & 0.343444 \\
+Fixed-time augmented state versus full prefix & \(<10^{-14}\) & \(<10^{-14}\) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Pair tests compare conditioning on the current state with conditioning on current and previous states. Every corrected comparison holds time fixed.
+
+The complete-configuration result shows that weighting introduces memory relative to \(z_t\). However, the maximum discrepancy does not summarize every aspect of dependence.
+
+The time-averaged conditional mutual information
+
+\begin{equation}
+I(s_{t+1};s_{t-1}\mid s_t)
+\end{equation}
+
+decreases from approximately \(0.129511\) to \(0.016795\) nats. Thus, a larger extreme discrepancy coexists with a smaller probability-weighted dependence measure. Claims that memory simply becomes ``stronger'' require a specified metric.
+
+\section{An exact forward-time Markov representation}
+
+\subsection{Bounded state augmentation}
+
+The reward remembers the initial data state and a two-step configuration recurrence. It can therefore be accumulated using
+
+\begin{equation}
+a_t=(s_0,z_{t-1},z_t),
+\end{equation}
+
+with \(z_{-1}=\bot\) at initialization.
+
+For a next configuration \(z'\), with data component \(s'\), define
+
+\begin{equation}
+r(a_t,z')
+=
+\ind_{\{s'=s_0\}}
++
+\frac12\ind_{\{z_{t-1}\ne\bot,\ z'=z_{t-1}\}},
+\end{equation}
+
+and
+
+\begin{equation}
+f(a_t,z')=(s_0,z_t,z').
+\end{equation}
+
+Then
+
+\begin{equation}
+V_T(h)
+=
+\sum_{t=0}^{T-1}r(a_t,z_{t+1}).
+\end{equation}
+
+After initialization, the augmented memory space has at most
+
+\begin{equation}
+4\cdot8\cdot8=256
+\end{equation}
+
+triples, before reachability restrictions. Time and the terminal horizon additionally enter the transition rule.
+
+\subsection{Forward-representation theorem}
+
+\begin{theorem}
+For every finite horizon \(T\) and real \(\lambda\), the weighted path law has an exact forward, time-inhomogeneous Markov representation on the augmented state space.
+\end{theorem}
+
+\begin{proof}
+Define backward weights by
+
+\begin{equation}
+b_T(a)=1,
+\end{equation}
+
+\begin{equation}
+b_t(a)
+=
+\sum_{z'}
+K(z,z')e^{\lambda r(a,z')}
+b_{t+1}(f(a,z')),
+\end{equation}
+
+where \(z\) is the current complete configuration contained in \(a\).
+
+Each weight is positive. Define
+
+\begin{equation}
+Q_t(z'\mid a)
+=
+\frac{
+K(z,z')e^{\lambda r(a,z')}
+b_{t+1}(f(a,z'))
+}{
+b_t(a)
+}.
+\end{equation}
+
+The recurrence makes each row sum to one.
+
+For \(a_0=(s_0,\bot,z_0)\), use
+
+\begin{equation}
+\mu_\lambda(z_0)
+=
+\frac{\mu_0(z_0)b_0(a_0)}{Z_T(\lambda)}.
+\end{equation}
+
+This is normalized because
+
+\begin{equation}
+Z_T(\lambda)
+=
+\sum_{z_0}\mu_0(z_0)b_0(a_0).
+\end{equation}
+
+Along a supported history,
+
+\begin{align}
+&\mu_\lambda(z_0)
+\prod_{t=0}^{T-1}Q_t(z_{t+1}\mid a_t)\\
+&\qquad=
+\frac{
+\mu_0(z_0)\prod_tK(z_t,z_{t+1})
+e^{\lambda V_T(h)}
+}{
+Z_T(\lambda)
+}.
+\end{align}
+
+All intermediate backward weights cancel, and \(b_T=1\). The right-hand side is exactly \(P_\lambda^{(T)}(h)\).
+\end{proof}
+
+This is a finite-horizon Doob-transform construction, consistent with established representations of exponentially weighted path measures \cite{chetrite2015ld}. Here, the equality is proved directly for the implemented model. The backward calculation determines coefficients; forward generation does not consult a realized future event.
+
+\subsection{Computational and interpretive consequences}
+
+The audit reconstructs all 512 history probabilities at
+
+\begin{equation}
+\lambda\in\{-1,0,0.5,1,2\}
+\end{equation}
+
+under both global and fixed-initial normalization. The largest individual discrepancy is approximately
+
+\begin{equation}
+2.11\times10^{-15}.
+\end{equation}
+
+This is numerical agreement with an algebraic identity, not an approximate large-time equivalence.
+
+\begin{corollary}
+Any observation obtained from these histories through the same observation rule has the same distribution under the weighted and forward representations.
+\end{corollary}
+
+\begin{proof}
+For an observation kernel \(L(y\mid h)\), the induced law is
+\begin{equation}
+\sum_h L(y\mid h)P(h).
+\end{equation}
+Equal path laws give equal observation laws.
+\end{proof}
+
+No statistic of the specified histories alone therefore distinguishes these representations.
+
+Interventions require additional rules explaining how each model changes under intervention. Equality of the present path laws does not settle that separate question. Nor is this a theorem about relativistic locality or every possible interpretation of teleology.
+
+It establishes a specific result: \textbf{the implemented global weighting needs no mathematically distinct alternative to forward stochastic dynamics once sufficient state information and time dependence are included.}
+
+\section{Initial preparation, reward meaning, and identifiability}
+
+\subsection{Global weighting changes the starting distribution}
+
+The initial law is uniform under \(P_0\), not generally under \(P_\lambda\).
+
+At \(\lambda=1\), the initial probability of
+
+\begin{equation}
+z_{\mathrm{ref}}=(0,(0,0))
+\end{equation}
+
+becomes approximately \(0.951001\), rather than \(0.125\). The weighting changes which starting configurations are represented in the ensemble.
+
+To hold preparation fixed, define
+
+\begin{equation}
+P_\lambda^{\mathrm{fix}}(h)
+=
+\mu_0(z_0)
+\frac{
+P_0(h\mid z_0)e^{\lambda V_T(h)}
+}{
+Z_T(\lambda;z_0)
+},
+\end{equation}
+
+where
+
+\begin{equation}
+Z_T(\lambda;z_0)
+=
+\E_0[e^{\lambda V_T}\mid z_0].
+\end{equation}
+
+The conditional continuation laws agree with those of the global ensemble, but the mixture over initial configurations differs. The same \(Q_t\) kernels generate this ensemble when initialized with \(\mu_0\), rather than \(\mu_\lambda\).
+
+\begin{table}[htbp]
+\centering
+\caption{Two normalization conventions at \(\lambda=1\).}
+\label{tab:init}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Quantity & Global tilt & Fixed initial law \\
+\midrule
+\(P(z_0=z_{\mathrm{ref}})\) & 0.951001 & 0.125000 \\
+\(\E[V]\) & 8.085082 & 3.489354 \\
+\(P(z_T=z_{\mathrm{ref}})\) & 0.883720 & 0.167672 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Neither convention is invalid. They answer different questions and cannot be interchanged while claiming that preparation remained fixed.
+
+The relative-entropy chain rule makes the distinction explicit:
+
+\begin{align}
+\KL(P_\lambda\Vert P_0)
+={}&\KL(\mu_\lambda\Vert\mu_0)\\
+&+\E_{\mu_\lambda}
+\left[
+\KL
+\bigl(
+P_\lambda(\cdot\mid z_0)
+\Vert
+P_0(\cdot\mid z_0)
+\bigr)
+\right].
+\end{align}
+
+At \(\lambda=1\), the supplementary calculation gives
+
+\begin{equation}
+2.876230
+=
+1.794537+1.081693
+\end{equation}
+
+nats, to displayed precision. A substantial part of the total divergence therefore concerns altered starting weights, not merely altered conditional evolution.
+
+\subsection{The selected reward favors stasis}
+
+The maximum score at \(T=6\) is \(8.5\). Exactly three supported histories achieve it, and each remains in a constant complete configuration.
+
+Their combined probability rises from \(0.032784\) to approximately \(0.881027\) between \(\lambda=0\) and \(\lambda=1\). Expected selector changes fall from \(1.5\) to approximately \(0.094162\).
+
+In the limit \(\lambda\to+\infty\), dividing all weights by \(e^{\lambda V_{\max}}\) shows that lower-scoring histories vanish. The limiting law is the baseline conditioned on the maximizing histories.
+
+For the constant histories at
+
+\begin{equation}
+(0,(0,0)),\qquad
+(0,(1,1)),\qquad
+(1,(0,0)),
+\end{equation}
+
+the limiting probabilities are respectively
+
+\begin{equation}
+\frac{2048}{2049},
+\qquad
+\frac1{4098},
+\qquad
+\frac1{4098}.
+\end{equation}
+
+The result is dominated by remaining unchanged. Calling the reward \emph{coherence} does not establish a measure of cognition. Calling it \emph{self-actualization} does not establish a theory of purpose. Such interpretations require criteria that do not merely restate the reward's definition.
+
+\subsection{An unrestricted utility specifies any positive target law}
+
+\begin{theorem}
+Let \(Q\) be any strictly positive probability distribution on \(\Hcal_T\). For any fixed nonzero \(\lambda\), choosing
+\begin{equation}
+V_Q(h)
+=
+\frac1\lambda
+\log\frac{Q(h)}{P_0(h)}
+\end{equation}
+makes the corresponding weighted law equal to \(Q\).
+\end{theorem}
+
+\begin{proof}
+Substitution yields
+\begin{equation}
+P_0(h)e^{\lambda V_Q(h)}=Q(h).
+\end{equation}
+The partition sum is therefore one.
+\end{proof}
+
+The theorem concerns unrestricted finite utilities. It does not assert that every target remains obtainable under independently imposed bounds, locality restrictions, or a specified internally generated reward architecture.
+
+Its significance is that \textbf{independent restrictions are necessary before the weighting formula has discriminating explanatory content}.
+
+There is also a scale ambiguity:
+
+\begin{equation}
+V\mapsto aV+b,
+\qquad
+\lambda\mapsto\frac{\lambda}{a},
+\end{equation}
+
+for nonzero \(a\), leaves the normalized distribution unchanged. The numerical meaning of \(\lambda\) therefore depends on a fixed utility scale.
+
+For a specified nonconstant \(V\), the variance is strictly positive at finite \(\lambda\), and the mean score is strictly increasing. The parameter is then identifiable at the level of complete path distributions. Observation loss can still impair identification, and neither fact supplies a physical interpretation.
+
+\section{Horizon dependence and formal amendments}
+
+\subsection{Terminal-horizon dependence}
+
+The weighted six-transition law need not equal the six-transition marginal of the seven-transition law. In this model, their total-variation distance at \(\lambda=1\) is approximately \(0.076023\); at zero tilt, it vanishes to numerical precision.
+
+The difference can be characterized exactly. For a prefix \(h\in\Hcal_T\), let
+
+\begin{equation}
+c_\lambda(h)
+=
+\sum_{z'}
+K(z_T,z')e^{\lambda r(a_T,z')}.
+\end{equation}
+
+Then
+
+\begin{equation}
+\sum_{z'}P_\lambda^{(T+1)}(h,z')
+=
+P_\lambda^{(T)}(h)
+\frac{Z_T(\lambda)}{Z_{T+1}(\lambda)}
+c_\lambda(h).
+\end{equation}
+
+The two prefix laws agree if and only if \(c_\lambda(h)\) is constant on supported prefixes, with value \(Z_{T+1}/Z_T\).
+
+Separate finite-horizon normalizations therefore do not automatically define one consistent infinite-time process. A boundary prescription, proven limit, or different consistent construction is needed. This is a modeling requirement, not a contradiction within any individual normalized ensemble.
+
+\subsection{What the executable model did not implement}
+
+The original canonicalization map is the identity on admitted configurations and is unused by the transition and weighting calculations. Its idempotence cannot establish emergence from unconstrained possibility.
+
+Likewise, a rule selector does not construct a reflexive object in categorical semantics. Such an object requires an exponential \(D^D\) and maps
+
+\begin{equation}
+\operatorname{encode}:D^D\to D,
+\qquad
+\operatorname{decode}:D\to D^D,
+\end{equation}
+
+satisfying
+
+\begin{equation}
+\operatorname{decode}\circ\operatorname{encode}
+=
+\operatorname{id}_{D^D}.
+\end{equation}
+
+This is the relevant retraction direction \cite{vanderleer2025}. An earlier proposal reversed that equation. The correction is to this reconstruction, not an error demonstrated in Langan's paper. No reflexive object was implemented.
+
+In the ordinary category of sets, a finite set with \(n>1\) elements cannot encode all \(n^n\) self-maps injectively into itself. Restricting admissible maps or changing the ambient category requires a separate explicit construction.
+
+No observer model, mind--reality correspondence, sheaf-gluing system, quantum amplitude structure, spacetime metric, or operational measurement map was included in the code. Their appearance in earlier conceptual proposals cannot count as computational verification.
+
+\section{The precise scope of validation}
+
+The findings support the distinctions summarized in Table~\ref{tab:scope}.
+
+\begin{table}[htbp]
+\centering
+\caption{Scope of the validated claims.}
+\label{tab:scope}
+\begin{tabular}{@{}p{0.27\textwidth}p{0.65\textwidth}@{}}
+\toprule
+Level & Finding \\
+\midrule
+Implementation checks & The tested computations reproduce their stated specification. \\
+Constructive existence & The finite chain and weighted path measures are well defined. \\
+Derived properties & Normalization, partition identities, and the forward representation follow mathematically. \\
+Limited conceptual illustration & Rule-state coupling and whole-history preference have precise finite examples. \\
+CTMU correspondence & No proof that the model satisfies the central CTMU claims was supplied. \\
+Physical validation & No observational comparison or physically calibrated prediction was performed. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The formal difference is between exhibiting a model of the toy assumptions and establishing a model of the intended theory.
+
+Writing \(A_{\mathrm{toy}}\) for the assumptions actually specified, the construction supports
+
+\begin{equation}
+\exists\mathcal M\;
+(\mathcal M\models A_{\mathrm{toy}}).
+\end{equation}
+
+It does not establish
+
+\begin{equation}
+\mathcal M\models A_{\mathrm{CTMU}},
+\end{equation}
+
+because the required formalization and interpretation have not been supplied.
+
+Accordingly, it is not a consistency proof for CTMU as a whole. Nor does the inadequacy of this analogue refute a stronger theory that it has not been shown to represent.
+
+The use of established probability theory is not a defect. A valuable theory can use familiar methods while adding independently justified constraints, explanatory economy, or successful predictions. What cannot be claimed here is that exponential weighting itself establishes a specifically CTMU mechanism.
+
+Observational equivalence also does not exhaust philosophical evaluation. Two interpretations can agree on outcomes while differing in explanatory commitments. Those commitments must be assessed through their arguments and assumptions, rather than credited with empirical support from a computation that predicts no difference between them.
+
+\section{Requirements for a stronger successor}
+
+A stronger successor should first define the theoretical claim it intends to represent and the mathematical conditions that would count as representing it. Terms such as \emph{self-configuration}, \emph{internal interpretation}, and \emph{observer} must correspond to operations and invariants, not merely names assigned to variables.
+
+The next requirement is an independently restricted utility. A derivation is one route; a clearly stated additional postulate with independently testable consequences is another. Failure to derive a utility from selected assumptions would reveal underdetermination in those assumptions, not a universal impossibility theorem.
+
+Within the present model, preserving the same configuration space and kernel while replacing \(V\) by \(-V\) already demonstrates that finite transition closure alone does not determine a preference.
+
+A physical application would require a defined observation map, a justified baseline, and a specification of permitted interventions. Comparison models must be restricted on independently motivated grounds, such as state dimension, accessible information, symmetry, causal structure, or resource limits. An unrestricted alternative reproducing the same path law cannot be distinguished using those paths alone.
+
+Finally, boundary conditions and horizon behavior must be specified before interpreting global selection as a law extending beyond a single finite ensemble. Any large-system or continuum limit requires its own existence and convergence analysis. Recovering the invented baseline at \(\lambda=0\) is not a derivation of known physics.
+
+Success would therefore be measured by what new restrictions explain or predict, not by how dramatically an adjustable reward changes a chosen simulation.
+
+\section{Discussion: what the research teaches}
+
+The most durable lesson is methodological. Formalization is valuable because it forces philosophical claims to expose their dependencies. Once a claim is represented by a mathematical object, one can ask which properties are definitions, which are consequences, which are optional modeling choices, and which have observable content.
+
+Three lessons emerged particularly clearly.
+
+First, \textbf{representation must not be confused with mechanism}. A global history weighting and a forward-time stochastic representation may describe the same path law. The existence of the first representation does not, by itself, establish retrocausation or a new mode of causality.
+
+Second, \textbf{semantic labels do not confer semantic content}. A recurrence score can be called coherence, but its operational behavior may simply favor stasis. A rule selector can be called syntax, but this does not establish the richer self-referential architecture attributed to SCSPL.
+
+Third, \textbf{explanatory strength comes from constraints}. When an unrestricted utility can be chosen to reproduce any positive target law on a finite support, the crucial scientific task is to determine what independently restricts that utility. A theory is made more informative by the outcomes it rules out, the structures it derives, and the predictions it cannot tune away.
+
+These lessons do not make ambitious metaphysical projects illegitimate. They clarify what mathematical formalization can contribute: not automatic confirmation, but sharper questions, auditable assumptions, and a clearer boundary between analogy and consequence.
+
+\section{Conclusion}
+
+CTMU-F 0.2 verifies an explicit finite stochastic construction inspired by selected CTMU themes. Its histories can be enumerated completely, its baseline probabilities represented exactly, and its weighted ensemble analyzed algebraically and computationally. The audit reproduces the numerical results while correcting the interpretation of memory, initialization, and reward.
+
+The strongest model-specific result is an exact forward-time Markov representation after bounded state augmentation. Global history preference is therefore compatible with an ordinary sequential probability law. The reward is not derived from CTMU, the parameters are not measured from nature, and the observed concentration largely favors stasis.
+
+What survives is not a computational proof of a theory of everything. It is a reproducible example of disciplined model construction: assumptions are explicit, consequences can be checked, alternative representations can be constructed, and unsupported inferences can be removed without discarding valid mathematics.
+
+\begin{quote}
+\textbf{The computation validates the stated finite construction in a limited mathematical sense. Establishing a correspondence with CTMU, and establishing a correspondence with physical reality, remain separate tasks.}
+\end{quote}
+
+\section*{Data, code, and research disclosure}
+
+The accompanying research package contains the preserved original model, retrospective audit, results, tests, and integrity information used in the computational analysis. The computational work uses the Python standard library.
+
+The construction originated in an AI-assisted research conversation. The audit is a reproducibility check of supplied artifacts, not independent external replication or peer review. No experimental data, human participants, fitted physical parameters, or proof-assistant verification are claimed.
+
+\begin{thebibliography}{9}
+
+\bibitem{langan2002}
+C. M. Langan,
+\emph{The Cognitive-Theoretic Model of the Universe: A New Kind of Reality Theory},
+2002.
+Available at: \url{https://infolab.ho.ua/Langan_CTMU_092902(1).pdf}
+
+\bibitem{chetrite2015ld}
+R. Chetrite and H. Touchette,
+``Nonequilibrium Markov processes conditioned on large deviations,''
+\emph{Annales Henri Poincar\'e}, vol. 16, pp. 2005--2057, 2015.
+Preprint: \url{https://arxiv.org/abs/1405.5157}
+
+\bibitem{chetrite2015control}
+R. Chetrite and H. Touchette,
+``Variational and optimal control representations of conditioned and driven processes,''
+\emph{Journal of Statistical Mechanics: Theory and Experiment}, P12001, 2015.
+Preprint: \url{https://arxiv.org/abs/1506.05291}
+
+\bibitem{vanderleer2025}
+A. van der Leer, K. Wullaert, and B. Ahrens,
+\emph{Scott's Representation Theorem and the Univalent Karoubi Envelope},
+2025.
+Preprint: \url{https://arxiv.org/abs/2506.22196}
+
+\end{thebibliography}
+
+\end{document}
